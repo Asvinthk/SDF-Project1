@@ -1,0 +1,42 @@
+<project name="arbitraryarithmetic" basedir="." default="build">
+
+    <!-- Set properties -->
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="build"/>
+    <property name="jar.name"    value="aarithmetic.jar"/>
+    <property name="main.class"  value="MyInfArith"/>
+
+    <!-- Clean -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete file="${jar.name}"/>
+    </target>
+
+    <!-- Compile the source code -->
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    </target>
+
+    <!-- Create a jar -->
+    <target name="jar" depends="compile">
+        <jar destfile="${jar.name}" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Run the project -->
+    <target name="run" depends="jar">
+        <java jar="${jar.name}" fork="true">
+            <arg value="${run.mode}"/>
+            <arg value="${run.op}"/>
+            <arg value="${run.op1}"/>
+            <arg value="${run.op2}"/>
+        </java>
+    </target>
+
+    <!-- Full build -->
+    <target name="build" depends="clean,jar"/>
+</project>
